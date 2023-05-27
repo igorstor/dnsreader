@@ -8,7 +8,7 @@ class DnsReaderService
 {
     public function getDnsRecords(string $hostName): Collection
     {
-        if (!$records = dns_get_record($hostName)) {
+        if (!(!empty($hostName) && $records = dns_get_record($hostName))) {
             return Collection::make();
         }
 

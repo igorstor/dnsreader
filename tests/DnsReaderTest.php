@@ -6,7 +6,7 @@ use Orchestra\Testbench\TestCase;
 
 class DnsReaderTest extends TestCase
 {
-    public function testGetDnsRecordsReturnsEmptyCollectionWhenCheckRecordFails()
+    public function testReturnsEmptyCollectionWhenCheckRecordFails()
     {
         $dnsReaderService = new DnsReaderService();
         $result = $dnsReaderService->getDnsRecords('https://invalidhostname.com');
@@ -15,12 +15,21 @@ class DnsReaderTest extends TestCase
         $this->assertTrue($result->isEmpty());
     }
 
-    public function testGetDnsRecordsReturnsCollectionOfRecordsWhenCheckRecordSucceeds()
+    public function testReturnsCollectionOfRecordsWhenCheckRecordSucceeds()
     {
         $dnsReaderService = new DnsReaderService();
         $result = $dnsReaderService->getDnsRecords('google.com');
 
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertTrue($result->isNotEmpty());
+    }
+
+    public function testReturnsCollectionOfRecordsWhenHostNameIsEmptyString()
+    {
+        $dnsReaderService = new DnsReaderService();
+        $result = $dnsReaderService->getDnsRecords('');
+
+        $this->assertInstanceOf(Collection::class, $result);
+        $this->assertTrue($result->isEmpty());
     }
 }
